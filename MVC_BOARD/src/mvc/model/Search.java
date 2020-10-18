@@ -26,7 +26,5 @@ public class Search {
 
 	public void setSearchKey(String searchKey) {
 		this.searchKey = searchKey;
-	}
-	
-	
+	}	
 }

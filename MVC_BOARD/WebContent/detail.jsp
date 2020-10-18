@@ -54,7 +54,7 @@ body {
 			<div class="board_info_box">
 				<span class="board_writer"><c:out
 						value="작성자 : ${board.writer}" /></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="board_regdate"><c:out value="${board.regdate}" /></span>
+				<span class="board_regdate"><c:out value="${board.regdate}" /></span>				
 				<span class="board_cnt"><c:out value="${hitcount}" /></span>
 			</div>
 			<div class="bg-white rounded shadow-sm" id="border">
@@ -62,7 +62,8 @@ body {
 				<br> <br>
 				<div class="board_content">${board.contents}</div>
 			</div>
-
+			<br><br>
+			<a href="/MVC_BOARD/download.jsp?filename=${board.fname }">${board.fname }</a>
 			<div style="margin-top: 20px">
 				<button type="button" class="btn btn-sm btn-primary" id="btnUpdate">수정</button>
 				<button type="button" class="btn btn-sm btn-primary" id="btnDelete">삭제</button>

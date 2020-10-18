@@ -15,13 +15,19 @@
 
 <title>board</title>
 <style>
-body {padding-top: 70px; padding-bottom: 30px;}
-#align {text-align: center;}
+body {
+	padding-top: 70px;
+	padding-bottom: 30px;
+}
+
+#align {
+	text-align: center;
+}
 </style>
 
 <script type="text/javascript">
-	$(document).on('click', '#btnWriteForm', function(e){
-		e.preventDefault();		
+	$(document).on('click', '#btnWriteForm', function(e) {
+		e.preventDefault();
 		location.href = "insertFormAction.do";
 	});
 </script>
@@ -57,13 +63,13 @@ body {padding-top: 70px; padding-bottom: 30px;}
 					</thead>
 					<tbody>
 						<c:choose>
-							<c:when test="${empty list }">
+							<c:when test="${empty listModel.list }">
 								<tr>
 									<td colspan="5" align="center">데이터가 없습니다.</td>
 								</tr>
 							</c:when>
-							<c:when test="${!empty list}">
-								<c:forEach var="board" items="${list }">
+							<c:when test="${!empty listModel.list}">
+								<c:forEach var="board" items="${listModel.list }">
 									<tr>
 										<td>${board.seq }</td>
 										<td><a href="detailAction.do?seq=${board.seq }">${board.title }</a></td>
@@ -80,18 +86,42 @@ body {padding-top: 70px; padding-bottom: 30px;}
 				</table>
 			</div>
 			<br>
+
+			<!-- 페이지 처리 영역 -->
+			<!-- 이전 영역 , start페이지가 5보다 클 경우-->
+			<c:if test="${listModel.startPage > 5 }">
+				<a href="listAction.do?pageNum=${listModel.startPage -1 }">[이전]</a>
+			</c:if>
+
+			<!-- 페이지 목록 -->
+			<c:forEach var="pageNo" begin="${listModel.startPage }"
+				end="${listModel.endPage }">
+				<c:if test="${listModel.requestPage == pageNo }">
+					<b>
+				</c:if>
+				<a href="listAction.do?pageNum=${pageNo }">[${pageNo }]</a>
+				<c:if test="${listModel.requestPage == pageNo }">
+					</b>
+				</c:if>
+			</c:forEach>
+
+			<!-- 이후 영역 ,  endPage보다 totalPageCount가 크면 -->
+			<c:if test="${listModel.endPage < listModel.totalPageCount }">
+				<a href="listAction.do?pageNum=${listModel.endPage +1 }">[이후]</a>
+			</c:if>
+
 			<form action="listAction.do" method="post">
 				<div align="center">
 					<select name="area" id="searchType">
 						<option value="title">제목</option>
 						<option value="writer">작성자</option>
-					</select> 
-					<input type="text" name="searchKey" size="10"> 
-					<input type="submit" value="검색">
+					</select> <input type="text" name="searchKey" size="10"> <input
+						type="submit" value="검색">
 				</div>
 			</form>
 		</div>
 	</article>
-	<br><br>
+	<br>
+	<br>
 </body>
 </html>

@@ -1,11 +1,9 @@
 package mvc.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mvc.model.BoardDTO;
+import mvc.model.ListModel;
 import mvc.service.BoardService;
 
 public class listAction implements Action {
@@ -15,8 +13,8 @@ public class listAction implements Action {
 		ActionForward forward = new ActionForward();
 		BoardService service = BoardService.getInstance();
 		
-		List<BoardDTO> list = service.listBoardService(request);		
-		request.setAttribute("list", list);
+		ListModel listModel = service.listBoardService(request);		
+		request.setAttribute("listModel", listModel);
 		
 		forward.setRedirect(false);
 		forward.setPath("/list.jsp");

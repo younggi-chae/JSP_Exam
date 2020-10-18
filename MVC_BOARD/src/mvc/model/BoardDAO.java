@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -51,12 +52,12 @@ public class BoardDAO {
 		return re;
 	}
 	
-	public List<BoardDTO> listBoard(Search search) {
+	public List<BoardDTO> listBoard(Search search, int startRow) {
 		SqlSession sqlSession = getSqlSessionFactory().openSession();
 		List<BoardDTO> list = null;
 		
 		try {
-			list = sqlSession.getMapper(BoardMapper.class).listBoard(search);
+			list = sqlSession.getMapper(BoardMapper.class).listBoard(search, new RowBounds(startRow, 2));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -188,6 +189,26 @@ public class BoardDAO {
 		int re = 0;
 		try {
 			re = sqlSession.getMapper(BoardMapper.class).cntBoard(seq);	
+			if(re > 0) {
+				sqlSession.commit();
+			} else {
+				sqlSession.rollback();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(sqlSession != null) {
+				sqlSession.close();
+			}
+		}
+		return re;
+	}
+	
+	public int countBoard(Search search) {
+		SqlSession sqlSession = getSqlSessionFactory().openSession();
+		int re = 0;
+		try {
+			re = sqlSession.getMapper(BoardMapper.class).countBoard(search);
 			if(re > 0) {
 				sqlSession.commit();
 			} else {
